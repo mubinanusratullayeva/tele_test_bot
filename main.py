@@ -1,20 +1,20 @@
-import os
-import telebot
-from dotenv import load_dotenv
-data = load_dotenv()
-
-BOT_TOKEN = os.getenv('BOT_TOKEN')
-
-bot = telebot.TeleBot(BOT_TOKEN)
+import psycopg2 as db
 
 
-@bot.message_handler(commands=['start', 'hello'])
-def send_welcome(message):
-    bot.reply_to(message, f"{message.from_user}")
-
-@bot.message_handler(func=lambda msg: True)
-def echo_all(message):
-    bot.reply_to(message, "Hi Ruslan, what's up")
-
-if __name__ == "__main__":
-    bot.infinity_polling()
+class Database:
+    @staticmethod
+    def connect(query, query_type):
+        database = db.connect(
+            database="tele_test_bot",
+            user="postgres",
+            host="localhost",
+            password="postgres"
+        )
+        cursor = database.cursor()
+        cursor.execute(query)
+        if query_type == "insert":
+            database.commit()
+            return "inserted"
+        
+        if query_type == "select":
+            return cursor.fetchall()
