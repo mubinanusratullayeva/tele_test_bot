@@ -5,7 +5,7 @@ from django.db import models
 class User(models.Model):
     full_name = models.CharField(verbose_name="Full Name", max_length=100, null=True, blank=False)
     username = models.CharField(verbose_name="Username", max_length=20, unique=True, null=True)
-    telegram_id = models.PositiveIntegerField(verbose_name="Telegram ID", max_length=20, unique=True)
+    telegram_id = models.PositiveIntegerField(verbose_name="Telegram ID", unique=True)
     create_date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
